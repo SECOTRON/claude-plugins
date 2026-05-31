@@ -29,7 +29,8 @@ A stdlib-only Python script does the parsing:
 ${CLAUDE_PLUGIN_ROOT}/skills/session-finder/scripts/sessions.py
 ```
 
-Run it with `python3`. Three subcommands:
+Run it with `python3` (or `python` on Windows, which usually has no `python3`).
+Three subcommands:
 
 | Goal                 | Command                              |
 | -------------------- | ------------------------------------ |

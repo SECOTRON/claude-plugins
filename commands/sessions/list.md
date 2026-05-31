@@ -7,7 +7,7 @@ Use the **session-finder** skill to list my recent Claude Code sessions.
 
 Scope: `$ARGUMENTS`
 
-Run the bundled script:
+Run the bundled script (use `python` instead of `python3` on Windows):
 `python3 ${CLAUDE_PLUGIN_ROOT}/skills/session-finder/scripts/sessions.py list`
 
 - If the scope is `here`, add `--here` to list only the current project's

@@ -7,7 +7,7 @@ Use the **session-finder** skill to search my past Claude Code sessions.
 
 Search terms: `$ARGUMENTS`
 
-Run the bundled script:
+Run the bundled script (use `python` instead of `python3` on Windows):
 `python3 ${CLAUDE_PLUGIN_ROOT}/skills/session-finder/scripts/sessions.py search "<terms>"`
 
 - Strip a trailing `here` from the terms and pass `--here` to limit the search

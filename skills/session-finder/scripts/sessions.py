@@ -24,6 +24,8 @@ transcripts older than ~30 days by default (cleanupPeriodDays), so very old
 sessions may already be gone.
 """
 
+from __future__ import annotations
+
 import argparse
 import json
 import os
@@ -35,6 +37,17 @@ from pathlib import Path
 def config_root() -> Path:
     env = os.environ.get("CLAUDE_CONFIG_DIR")
     return Path(env).expanduser() if env else Path.home() / ".claude"
+
+
+def _norm(path):
+    """Normalize a path for cross-OS comparison.
+
+    normcase folds Windows case-insensitivity + backslashes; realpath collapses
+    separators and symlinks. Returns the input unchanged if falsy.
+    """
+    if not path:
+        return path
+    return os.path.normcase(os.path.realpath(os.path.expanduser(path)))
 
 
 def session_roots() -> list[Path]:
@@ -130,9 +143,9 @@ def title_of(meta: dict) -> str:
 
 def matches_scope(meta: dict, args) -> bool:
     if args.here:
-        return meta.get("cwd") == os.getcwd()
+        return _norm(meta.get("cwd")) == _norm(os.getcwd())
     if args.project:
-        return meta.get("cwd") == str(Path(args.project).expanduser())
+        return _norm(meta.get("cwd")) == _norm(args.project)
     return True
 
 
@@ -260,7 +273,7 @@ def cmd_show(args):
         print(f"[{tag}] {txt}")
     print("-" * 60)
     cwd = meta.get("cwd")
-    if cwd and cwd != os.getcwd():
+    if cwd and _norm(cwd) != _norm(os.getcwd()):
         print(f"To resume:  cd {cwd} && claude --resume {meta['id']}")
     else:
         print(f"To resume:  claude --resume {meta['id']}")

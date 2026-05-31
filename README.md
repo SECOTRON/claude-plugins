@@ -53,6 +53,9 @@ Or just ask in plain language — the skill will fire on its own.
 
 ### Direct script use (optional)
 
+Use `python3` on macOS/Linux, or `python` on Windows (which usually has no
+`python3`). The script runs on Python 3.7+ with no dependencies.
+
 ```text
 python3 skills/session-finder/scripts/sessions.py list --here
 python3 skills/session-finder/scripts/sessions.py search "race condition"

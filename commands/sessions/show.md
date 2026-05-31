@@ -7,7 +7,7 @@ Use the **session-finder** skill to outline one Claude Code session.
 
 Request: `$ARGUMENTS`
 
-Run the bundled script:
+Run the bundled script (use `python` instead of `python3` on Windows):
 `python3 ${CLAUDE_PLUGIN_ROOT}/skills/session-finder/scripts/sessions.py show <id>`
 
 - Take the session id (a uuid-like token) from the request. A bare prefix is

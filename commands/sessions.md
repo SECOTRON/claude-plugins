@@ -9,6 +9,7 @@ My request: `$ARGUMENTS`
 
 The session-parsing script is bundled at:
 `${CLAUDE_PLUGIN_ROOT}/skills/session-finder/scripts/sessions.py`
+Invoke it with `python3` (or `python` on Windows, which usually has no `python3`).
 
 This is the `/sessions` router. Interpret `$ARGUMENTS` and run the right
 subcommand. The first word may be an explicit subcommand; if it is not, infer
