@@ -1,4 +1,4 @@
-# claude-session-finder
+# session-finder
 
 A Claude Code plugin to **find, search, summarize and resume past sessions across
 every surface** (terminal, VS Code, desktop app, web).
@@ -29,14 +29,14 @@ marketplace. From Claude Code:
 
 ```text
 /plugin marketplace add secotron/claude-plugins
-/plugin install claude-session-finder@secotron
+/plugin install session-finder@secotron
 ```
 
 For local development, point the marketplace at a checkout instead:
 
 ```text
 /plugin marketplace add /path/to/claude-plugins
-/plugin install claude-session-finder@secotron
+/plugin install session-finder@secotron
 ```
 
 Restart / reload when prompted.

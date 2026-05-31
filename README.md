@@ -14,12 +14,12 @@ Then install any plugin below with `/plugin install <name>@secotron`.
 
 ## Plugins
 
-| Plugin | Description |
-| ------ | ----------- |
-| [`claude-session-finder`](plugins/claude-session-finder) | Find, search, summarize and resume past Claude Code sessions across surfaces (terminal, VS Code, desktop app, web) by reading the local JSONL transcripts. |
+| Plugin                                     | Description                                                                                                                                                |
+| ------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [`session-finder`](plugins/session-finder) | Find, search, summarize and resume past Claude Code sessions across surfaces (terminal, VS Code, desktop app, web) by reading the local JSONL transcripts. |
 
 ```text
-/plugin install claude-session-finder@secotron
+/plugin install session-finder@secotron
 ```
 
 ## Repository layout

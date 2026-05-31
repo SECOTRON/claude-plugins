@@ -6,8 +6,8 @@
   },
   "plugins": [
     {
-      "name": "claude-session-finder",
-      "source": "./plugins/claude-session-finder",
+      "name": "session-finder",
+      "source": "./plugins/session-finder",
       "description": "Find, search, summarize and resume past Claude Code sessions across surfaces by reading the local JSONL transcripts."
     }
   ]
