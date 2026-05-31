@@ -8,6 +8,12 @@
   SECOTRON's <a href="https://claude.com/claude-code">Claude Code</a> plugin marketplace.
 </p>
 
+<p align="center">
+  <a href="https://github.com/SECOTRON/claude-plugins/actions/workflows/ci.yml"><img src="https://github.com/SECOTRON/claude-plugins/actions/workflows/ci.yml/badge.svg?branch=main" alt="CI"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/github/license/SECOTRON/claude-plugins?color=blue" alt="License: MIT"></a>
+  <img src="https://img.shields.io/badge/Claude%20Code-plugin%20marketplace-d97757" alt="Claude Code plugin marketplace">
+</p>
+
 ## Install the marketplace
 
 From Claude Code:
