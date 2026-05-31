@@ -2,23 +2,24 @@
   "folders": [
     {
       "name": "claude-plugins",
-      "path": "."
-    }
+      "path": ".",
+    },
   ],
   "settings": {
     "editor.formatOnSave": true,
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.multiCursorModifier": "ctrlCmd",
     "[python]": {
-      "editor.defaultFormatter": "trunk.io"
+      "editor.defaultFormatter": "trunk.io",
     },
-    "workbench.colorTheme": "SECOTRON",
+    "workbench.colorTheme": "SECOTRON Dark",
     "git.autofetch": true,
     "trunk.repoScanViewEnabled": true,
     "trunk.repoScanViewVisible": true,
     "peacock.affectActivityBar": true,
     "peacock.affectStatusBar": true,
-    "peacock.affectTitleBar": true
+    "peacock.affectTitleBar": true,
+    "makefile.configureOnOpen": false,
   },
   "extensions": {
     "recommendations": [
@@ -34,7 +35,7 @@
       "bierner.github-markdown-preview",
       "ms-vscode.makefile-tools",
       "secotron.secotron-color-theme",
-      "johnpapa.vscode-peacock"
-    ]
-  }
+      "johnpapa.vscode-peacock",
+    ],
+  },
 }
