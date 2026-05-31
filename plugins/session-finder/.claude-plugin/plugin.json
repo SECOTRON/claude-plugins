@@ -1,7 +1,7 @@
 {
   "name": "session-finder",
   "description": "Find, search, summarize and resume past Claude Code sessions across surfaces (terminal, VS Code, desktop app, web) by reading the local JSONL transcripts under ~/.claude/projects. Use whenever the user wants to locate an old session, recall what was discussed, search conversation history by topic or date, or get the command to resume a previous session.",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "author": {
     "name": "SECOTRON",
     "url": "https://github.com/SECOTRON"

@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.0](https://github.com/SECOTRON/claude-plugins/compare/session-finder-v0.2.0...session-finder-v0.3.0) (2026-05-31)
+
+
+### Features
+
+* **session-finder:** add soft-resume via recap subcommand ([e53c7f4](https://github.com/SECOTRON/claude-plugins/commit/e53c7f480f6c706b7d332baecae992dc391e2040))
+
 ## [0.2.0](https://github.com/SECOTRON/claude-plugins/compare/session-finder-v0.1.0...session-finder-v0.2.0) (2026-05-31)
 
 
