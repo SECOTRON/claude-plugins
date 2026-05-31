@@ -11,6 +11,8 @@ Subcommands:
     list                 List recent sessions (newest first).
     search <query>       Full-text search across session messages.
     show <session-id>    Print an outline of one session.
+    recap [session-id]   Dump a session's conversation for in-session rehydration
+                         (soft resume); latest in scope when no id is given.
     resume [session-id]  Print the `claude --resume` command for a session
                          (the latest in scope when no id is given).
 
@@ -285,24 +287,28 @@ def cmd_show(args):
     print(f"To resume:  {resume_line(meta)}")
 
 
-def cmd_resume(args):
+def _resolve_target(args) -> tuple:
+    """Resolve the target session: an explicit id/prefix, else latest in scope.
+
+    Returns (path, meta). Exits with a message if nothing matches.
+    """
     if args.session_id:
         path = find_by_id(args.session_id)
         if path is None:
             print(f"No session file found for id {args.session_id!r}.")
             sys.exit(1)
-        meta = quick_meta(path)
-    else:
-        metas = [
-            m
-            for m in (quick_meta(p) for p in session_files())
-            if matches_scope(m, args)
-        ]
-        if not metas:
-            print("No sessions found for this scope.")
-            sys.exit(1)
-        metas.sort(key=lambda m: m["mtime"], reverse=True)
-        meta = metas[0]
+        return path, quick_meta(path)
+    pairs = [(p, quick_meta(p)) for p in session_files()]
+    pairs = [(p, m) for p, m in pairs if matches_scope(m, args)]
+    if not pairs:
+        print("No sessions found for this scope.")
+        sys.exit(1)
+    pairs.sort(key=lambda pm: pm[1]["mtime"], reverse=True)
+    return pairs[0]
+
+
+def cmd_resume(args):
+    _, meta = _resolve_target(args)
     if args.json:
         print(
             json.dumps(
@@ -320,6 +326,71 @@ def cmd_resume(args):
     print("# Copy-paste into your own terminal (this prints the command, it does")
     print("# NOT switch the current conversation):")
     print(resume_line(meta))
+
+
+def _conversation(path: Path, tail: int, cap: int) -> tuple:
+    """Return (total_count, rows) where rows are the last `tail` (role, text)
+    user/assistant turns, each capped at `cap` chars. Tool-only lines skipped."""
+    rows = []
+    total = 0
+    with path.open("r", encoding="utf-8", errors="replace") as fh:
+        for line in fh:
+            if not line.strip():
+                continue
+            try:
+                obj = json.loads(line)
+            except json.JSONDecodeError:
+                continue
+            if obj.get("type") not in ("user", "assistant"):
+                continue
+            txt = " ".join(_text_from_message(obj.get("message", {})).split())
+            if not txt:
+                continue
+            total += 1
+            rows.append((obj["type"], txt[:cap] + ("…" if len(txt) > cap else "")))
+    if tail and len(rows) > tail:
+        rows = rows[-tail:]
+    return total, rows
+
+
+def cmd_recap(args):
+    """Dump a session as context for in-session rehydration (soft resume)."""
+    path, meta = _resolve_target(args)
+    cap = 4000 if args.full else 1500
+    tail = 0 if args.full else args.tail
+    total, rows = _conversation(path, tail, cap)
+    if args.json:
+        print(
+            json.dumps(
+                {
+                    "id": meta["id"],
+                    "title": title_of(meta),
+                    "cwd": meta.get("cwd"),
+                    "branch": meta.get("branch"),
+                    "age": fmt_age(meta["mtime"]),
+                    "messages": total,
+                    "shown": len(rows),
+                    "resume_command": resume_line(meta),
+                    "rows": rows,
+                },
+                indent=2,
+            )
+        )
+        return
+    print(f"Session: {title_of(meta)}")
+    print(f"Id:      {meta['id']}")
+    print(f"Project: {meta.get('cwd') or '(unknown)'}")
+    if meta.get("branch"):
+        print(f"Branch:  {meta['branch']}")
+    shown = f"last {len(rows)} of {total}" if total > len(rows) else f"{total}"
+    print(f"Messages: {shown}   ·   last activity {fmt_age(meta['mtime'])}")
+    print("=" * 60)
+    for role, txt in rows:
+        tag = "you" if role == "user" else "claude"
+        print(f"[{tag}] {txt}")
+    print("=" * 60)
+    print("# For a true session switch (exact history, in its project dir):")
+    print(f"#   {resume_line(meta)}")
 
 
 def build_parser():
@@ -365,6 +436,31 @@ def build_parser():
     rp.add_argument("--project", help="only this project path")
     rp.add_argument("--json", action="store_true")
     rp.set_defaults(func=cmd_resume)
+
+    rcp = sub.add_parser(
+        "recap",
+        help="dump a session's conversation for in-session rehydration (soft resume)",
+    )
+    rcp.add_argument(
+        "session_id",
+        nargs="?",
+        help="session id or prefix; omit to use the latest in scope",
+    )
+    rcp.add_argument(
+        "--here", action="store_true", help="only current directory's project"
+    )
+    rcp.add_argument("--project", help="only this project path")
+    rcp.add_argument(
+        "--tail",
+        type=int,
+        default=60,
+        help="show only the last N turns (default 60; ignored with --full)",
+    )
+    rcp.add_argument(
+        "--full", action="store_true", help="all turns, longer per-turn text"
+    )
+    rcp.add_argument("--json", action="store_true")
+    rcp.set_defaults(func=cmd_recap)
     return p
 
 

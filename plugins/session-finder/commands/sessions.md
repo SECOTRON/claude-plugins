@@ -21,10 +21,11 @@ intent from the whole string.
   (add `--here` for the current project only; default lists every project,
   newest first).
 - First word `show`, or a uuid-like token → run `show <id>` to print an outline.
-- First word `resume` → run `resume` (add `--here` for this project, or pass an
-  id / search first then `resume <id>`); print the ready `claude --resume`
-  command. This hands over a command to run — it does not swap the live session
-  in place like the built-in `/resume`.
+- First word `resume` → **soft-resume**: run `recap <id>` (add `--here`, or pass
+  an id / search first), read it, summarize where it left off, and continue on
+  that topic in this conversation regardless of the current project. Also offer
+  the `claude --resume <id>` command (printed by `recap`) for an exact switch.
+- First word `recap` → just load + summarize a session without continuing.
 
 Then show me the matches as a short readable list, and when I pick one, give me
 the exact `claude --resume <id>` command (prefixed with `cd <project> &&` if it

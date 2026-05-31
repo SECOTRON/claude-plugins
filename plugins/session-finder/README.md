@@ -10,20 +10,27 @@ one searchable view — and the exact command to resume any of them.
 
 ## What you get
 
-- **`/sessions`** slash command — a router; `find`, `list`, `show`, or `resume`
-  past sessions. Also exposed as namespaced subcommands `/sessions:find`,
+- **`/sessions`** slash command — a router; `find`, `list`, `show`, `resume`, or
+  `recap` past sessions. Also exposed as namespaced subcommands `/sessions:find`,
   `/sessions:list`, `/sessions:show`, `/sessions:resume`.
 - **`session-finder`** skill — auto-triggers on natural phrases like
   "find the chat where we fixed the auth bug" or "what did we decide about X".
 - A stdlib-only Python parser (no dependencies) at
   `skills/session-finder/scripts/sessions.py`.
 
+### Two ways to pick up a past session
+
+- **Soft resume (in place):** `/sessions resume` loads the target session's
+  context and **continues on that topic in your current conversation** —
+  regardless of which project you're in. Best for "catch me up and keep going."
+  It rehydrates context, not the exact message log or tool state.
+- **Exact switch:** the recap also prints `claude --resume <id>` (cd-prefixed)
+  for a true restore you run in your own terminal. A command can't swap its own
+  live session the way the built-in `/resume` does, so that part is a hand-off.
+
 This does **not** override the built-in `/resume`. `/resume` is the per-project
-picker for the current surface; this plugin adds cross-project, cross-surface
-search and hands you `claude --resume <id>` when you've found the one you want.
-`/sessions resume` is a shortcut for that hand-off (latest in scope, or by id) —
-it prints the command to run; it does not swap the live conversation in place
-like the built-in `/resume`.
+picker for the current surface; this plugin adds a cross-project view, content
+search, and a soft-resume that works from anywhere.
 
 ## Install
 
@@ -51,13 +58,14 @@ Restart / reload when prompted.
 /sessions here                     # recent sessions, current project only
 /sessions invoice forwarding       # search message text
 /sessions 11111111-aaaa-...        # outline one session by id
-/sessions resume here              # command to resume the latest here
+/sessions resume here              # soft-resume the latest session here
+/sessions recap <id>               # load a session, summarize, don't continue
 
 # or the namespaced subcommands:
 /sessions:list here
 /sessions:find race condition
 /sessions:show <id> full
-/sessions:resume                   # resume command for the latest session
+/sessions:resume                   # soft-resume the latest session
 ```
 
 Or just ask in plain language — the skill will fire on its own.
@@ -71,6 +79,7 @@ Use `python3` on macOS/Linux, or `python` on Windows (which usually has no
 python3 skills/session-finder/scripts/sessions.py list --here
 python3 skills/session-finder/scripts/sessions.py search "race condition"
 python3 skills/session-finder/scripts/sessions.py show <id> --full
+python3 skills/session-finder/scripts/sessions.py recap <id> --tail 40
 python3 skills/session-finder/scripts/sessions.py resume --here
 ```
 

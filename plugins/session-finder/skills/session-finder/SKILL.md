@@ -30,30 +30,38 @@ ${CLAUDE_PLUGIN_ROOT}/skills/session-finder/scripts/sessions.py
 ```
 
 Run it with `python3` (or `python` on Windows, which usually has no `python3`).
-Four subcommands:
+Five subcommands:
 
-| Goal                 | Command                                |
-| -------------------- | -------------------------------------- |
-| List recent sessions | `python3 <script> list`                |
-| Search message text  | `python3 <script> search "auth bug"`   |
-| Outline one session  | `python3 <script> show <session-id>`   |
-| Get a resume command | `python3 <script> resume [session-id]` |
+| Goal                           | Command                                |
+| ------------------------------ | -------------------------------------- |
+| List recent sessions           | `python3 <script> list`                |
+| Search message text            | `python3 <script> search "auth bug"`   |
+| Outline one session            | `python3 <script> show <session-id>`   |
+| Load a session for soft-resume | `python3 <script> recap [session-id]`  |
+| Get a real resume command      | `python3 <script> resume [session-id]` |
 
-Scope flags (for `list`, `search`, `resume`): `--here` (only the current
-directory's project), `--project <path>` (a specific project), or nothing (all
-projects). Other flags: `--limit N` (default 20), `--json` (machine-readable),
-and `--full` (longer previews, `show` only).
+Scope flags (for `list`, `search`, `recap`, `resume`): `--here` (only the
+current directory's project), `--project <path>` (a specific project), or
+nothing (all projects). Other flags: `--limit N` (list/search, default 20),
+`--tail N` (recap, default 60), `--full` (recap/show), `--json`.
 
-`resume` with no id picks the most recent session in scope; with an id (or
-prefix) it targets that one. It prints the `claude --resume <id>` command — it
-does **not** swap the live conversation in place the way the built-in `/resume`
-does; the user runs the printed command in their CLI/IDE.
+Two ways to "resume", and they differ:
+
+- **`recap`** = _soft resume_. Dumps the session's conversation tail so you can
+  read it, summarize where it left off, and **continue on that topic in the
+  current conversation** — regardless of the current directory/project. This is
+  the right choice in-session. It rehydrates context, not the exact message log
+  or tool state.
+- **`resume`** = prints the `claude --resume <id>` command for an _exact_ switch
+  the user runs in their own terminal. A command can't swap its own live session
+  the way built-in `/resume` does, so this is a hand-off.
 
 ## Workflow
 
 1. **Figure out the intent.** A topic or keywords → `search`. "What was I just
-   doing / recent sessions" → `list`. A uuid-like id → `show`. "Resume X / pick
-   up where I left off" → `resume` (latest in scope, or by id).
+   doing / recent sessions" → `list`. A uuid-like id → `show`. "Resume / pick up
+   / continue where I left off" → `recap` (soft resume: load + keep going here).
+   "Give me the resume command" / wants an exact switch → `resume`.
 2. **Start narrow, then widen.** If the user is clearly talking about the
    project they're in, try `--here` first; if nothing fits, rerun without it to
    cover all projects and surfaces.
@@ -61,10 +69,11 @@ does; the user runs the printed command in their CLI/IDE.
    reason over many results; use the plain output when you'll show it as-is.
 4. **Present matches** as a short list: title, how long ago, project path, and
    the id. Keep it scannable.
-5. **Resume hand-off.** When the user picks one, give the exact command:
-   `claude --resume <id>` — prefixed with `cd <project-path> &&` when the
-   session belongs to a different directory than the current one. Resuming
-   happens in the CLI/IDE; this skill does not resume for them.
+5. **Resume.** Two modes: _soft_ — run `recap <id>`, summarize where it left
+   off, and continue on that topic in this conversation (works across projects).
+   _Exact_ — give the `claude --resume <id>` command (cd-prefixed for other
+   dirs) for the user to run in their CLI/IDE. Offer the exact switch when they
+   need the real session back (e.g. to edit that project's files in its dir).
 6. **Summaries.** If asked what happened in a session, run `show` (optionally
    `--full`) and summarize from the real output. Never fabricate ids or content.
 
