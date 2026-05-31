@@ -21,6 +21,8 @@ Interpret the request:
 Then give me the exact line the script prints — `claude --resume <id>`
 (prefixed with `cd <project> &&` when the session is in another directory).
 
-Note: this hands you the command to run; it does not swap the live
-conversation in place the way the built-in `/resume` does. Run the printed
-command in your terminal / IDE to actually resume. Never invent session ids.
+Important: this is a hand-off, not an in-place resume. When you present the
+result, tell me explicitly to **run the printed command in my own terminal**
+to resume — do NOT imply the current conversation has been switched (it has
+not; a command can't swap its own live session the way built-in `/resume`
+does). Never invent session ids.

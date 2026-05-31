@@ -315,8 +315,10 @@ def cmd_resume(args):
             )
         )
         return
-    print(f"# {title_of(meta)}")
+    print(f"# Resume: {title_of(meta)}")
     print(f"# {fmt_age(meta['mtime'])} · {meta.get('cwd') or '(unknown project)'}")
+    print("# Copy-paste into your own terminal (this prints the command, it does")
+    print("# NOT switch the current conversation):")
     print(resume_line(meta))
 
 
