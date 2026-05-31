@@ -1,4 +1,4 @@
-# Secotron claude-plugins — developer tasks.
+# SECOTRON claude-plugins — developer tasks.
 # Run `make` or `make help` for the list.
 
 PYTHON ?= python3

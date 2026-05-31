@@ -1,6 +1,12 @@
-# secotron/claude-plugins
+<p align="center">
+  <img src="assets/logo.png" alt="SECOTRON" width="120" height="120">
+</p>
 
-Secotron's [Claude Code](https://claude.com/claude-code) plugin marketplace.
+<h1 align="center">SECOTRON / claude-plugins</h1>
+
+<p align="center">
+  SECOTRON's <a href="https://claude.com/claude-code">Claude Code</a> plugin marketplace.
+</p>
 
 ## Install the marketplace
 
