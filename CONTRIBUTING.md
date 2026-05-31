@@ -66,3 +66,20 @@ make fmt        # auto-format
 4. Open the PR against [`SECOTRON/claude-plugins`](https://github.com/SECOTRON/claude-plugins).
 
 Rebase merges are preferred when history is clean and linear.
+
+## Releasing
+
+Plugins install directly from this repo — there is no build step or registry, so
+releases are lightweight and manual:
+
+1. Bump the affected plugin's `version` in its `plugin.json` (SemVer).
+2. Move the relevant `CHANGELOG.md` entries from `[Unreleased]` into a new
+   dated version section.
+3. Commit (`chore(release): <plugin> vX.Y.Z`), then tag a marketplace snapshot:
+   `git tag vX.Y.Z && git push --tags`.
+4. Optionally publish a GitHub Release from the tag with the changelog notes.
+
+Users always get the latest `main` when they install; tags exist for changelog
+and reference. If release cadence grows, consider automating with
+[Changesets](https://github.com/changesets/changesets) (per-plugin versions +
+changelogs for a monorepo) — deferred until warranted.
