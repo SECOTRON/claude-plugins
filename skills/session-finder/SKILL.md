@@ -25,17 +25,17 @@ search across all of them from one place.
 
 A stdlib-only Python script does the parsing:
 
-```
+```text
 ${CLAUDE_PLUGIN_ROOT}/skills/session-finder/scripts/sessions.py
 ```
 
 Run it with `python3`. Three subcommands:
 
-| Goal | Command |
-|------|---------|
-| List recent sessions | `python3 <script> list` |
-| Search message text | `python3 <script> search "auth bug"` |
-| Outline one session | `python3 <script> show <session-id>` |
+| Goal                 | Command                              |
+| -------------------- | ------------------------------------ |
+| List recent sessions | `python3 <script> list`              |
+| Search message text  | `python3 <script> search "auth bug"` |
+| Outline one session  | `python3 <script> show <session-id>` |
 
 Scope flags (for `list` and `search`): `--here` (only the current directory's
 project), `--project <path>` (a specific project), or nothing (all projects).

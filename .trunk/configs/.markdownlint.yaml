@@ -1,0 +1,5 @@
+# Prettier friendly markdownlint config (all formatting rules disabled)
+extends: markdownlint/style/prettier
+# Command/skill markdown files start with YAML frontmatter + prose, not a
+# top-level heading — MD041 does not apply to them.
+MD041: false

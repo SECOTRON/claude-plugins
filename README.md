@@ -27,7 +27,7 @@ search and hands you `claude --resume <id>` when you've found the one you want.
 The repo doubles as a local marketplace (manifest + marketplace.json in
 `.claude-plugin/`). From Claude Code:
 
-```
+```text
 /plugin marketplace add /path/to/claude-session-finder
 /plugin install claude-session-finder@thomas-local
 ```
@@ -37,7 +37,7 @@ prompted.
 
 ## Use
 
-```
+```text
 /sessions                          # recent sessions, all projects
 /sessions here                     # recent sessions, current project only
 /sessions invoice forwarding       # search message text
@@ -53,7 +53,7 @@ Or just ask in plain language — the skill will fire on its own.
 
 ### Direct script use (optional)
 
-```
+```text
 python3 skills/session-finder/scripts/sessions.py list --here
 python3 skills/session-finder/scripts/sessions.py search "race condition"
 python3 skills/session-finder/scripts/sessions.py show <id> --full

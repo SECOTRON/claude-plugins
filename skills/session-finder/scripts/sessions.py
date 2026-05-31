@@ -43,7 +43,13 @@ def session_roots() -> list[Path]:
     if primary.is_dir():
         roots.append(primary)
     # macOS desktop app sometimes stores sessions here too (best effort).
-    mac = Path.home() / "Library" / "Application Support" / "Claude" / "claude-code-sessions"
+    mac = (
+        Path.home()
+        / "Library"
+        / "Application Support"
+        / "Claude"
+        / "claude-code-sessions"
+    )
     if mac.is_dir():
         roots.append(mac)
     return roots
@@ -107,8 +113,7 @@ def quick_meta(path: Path) -> dict:
                     meta["branch"] = obj["gitBranch"]
                 if obj.get("type") == "summary" and not meta["summary"]:
                     meta["summary"] = obj.get("summary")
-                if (meta["first_prompt"] is None
-                        and obj.get("type") == "user"):
+                if meta["first_prompt"] is None and obj.get("type") == "user":
                     txt = _text_from_message(obj.get("message", {})).strip()
                     if txt:
                         meta["first_prompt"] = txt
@@ -183,7 +188,7 @@ def cmd_search(args):
                     if needle in hay:
                         idx = hay.find(needle)
                         start = max(0, idx - 60)
-                        snippet = " ".join(txt[start:idx + 120].split())
+                        snippet = " ".join(txt[start : idx + 120].split())
                         break
         except OSError:
             continue
@@ -223,7 +228,6 @@ def cmd_show(args):
         sys.exit(1)
     meta = quick_meta(path)
     rows = []
-    last_ts = None
     count = 0
     with path.open("r", encoding="utf-8", errors="replace") as fh:
         for line in fh:
@@ -233,14 +237,14 @@ def cmd_show(args):
                 obj = json.loads(line)
             except json.JSONDecodeError:
                 continue
-            if obj.get("timestamp"):
-                last_ts = obj["timestamp"]
             if obj.get("type") in ("user", "assistant"):
                 count += 1
                 txt = " ".join(_text_from_message(obj.get("message", {})).split())
                 limit = 400 if args.full else 120
                 if txt:
-                    rows.append((obj["type"], txt[:limit] + ("..." if len(txt) > limit else "")))
+                    rows.append(
+                        (obj["type"], txt[:limit] + ("..." if len(txt) > limit else ""))
+                    )
     if args.json:
         print(json.dumps({"meta": meta, "messages": count, "rows": rows}, indent=2))
         return
@@ -267,7 +271,9 @@ def build_parser():
     sub = p.add_subparsers(dest="cmd", required=True)
 
     def add_scope(sp):
-        sp.add_argument("--here", action="store_true", help="only current directory's project")
+        sp.add_argument(
+            "--here", action="store_true", help="only current directory's project"
+        )
         sp.add_argument("--project", help="only this project path")
         sp.add_argument("--limit", type=int, default=20)
         sp.add_argument("--json", action="store_true")
