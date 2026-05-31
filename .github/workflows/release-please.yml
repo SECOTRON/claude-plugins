@@ -1,0 +1,23 @@
+name: Release Please
+
+# Opens/updates a release PR from Conventional Commits; merging it bumps the
+# version, updates CHANGELOG.md + plugin.json, tags vX.Y.Z, and cuts a GitHub
+# Release. Guarded to the canonical repo so the showcase fork stays passive.
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    if: github.repository == 'SECOTRON/claude-plugins'
+    steps:
+      - name: Run release-please
+        uses: googleapis/release-please-action@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}

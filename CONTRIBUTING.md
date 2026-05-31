@@ -69,17 +69,25 @@ Rebase merges are preferred when history is clean and linear.
 
 ## Releasing
 
-Plugins install directly from this repo — there is no build step or registry, so
-releases are lightweight and manual:
+Releases are automated with
+[release-please](https://github.com/googleapis/release-please). You don't bump
+versions or edit the changelog by hand:
 
-1. Bump the affected plugin's `version` in its `plugin.json` (SemVer).
-2. Move the relevant `CHANGELOG.md` entries from `[Unreleased]` into a new
-   dated version section.
-3. Commit (`chore(release): <plugin> vX.Y.Z`), then tag a marketplace snapshot:
-   `git tag vX.Y.Z && git push --tags`.
-4. Optionally publish a GitHub Release from the tag with the changelog notes.
+1. Land Conventional-Commit PRs on `main` as usual.
+2. release-please keeps an open **"release PR"** that accumulates the next
+   version bump (from commit types) and the generated `CHANGELOG.md`.
+3. **Merge the release PR** when ready. That tags `vX.Y.Z`, updates
+   `CHANGELOG.md` + the plugin's `plugin.json` version, and publishes a GitHub
+   Release.
 
-Users always get the latest `main` when they install; tags exist for changelog
-and reference. If release cadence grows, consider automating with
-[Changesets](https://github.com/changesets/changesets) (per-plugin versions +
-changelogs for a monorepo) — deferred until warranted.
+`feat` → minor, `fix` → patch, `feat!`/`BREAKING CHANGE` → major. `chore`/`ci`
+are hidden from the changelog.
+
+> **Versioning model:** currently _lockstep_ — one repo version (`vX.Y.Z`) covers
+> the whole marketplace; the single plugin's `plugin.json` is kept in sync. When
+> multiple independently-versioned plugins exist, migrate
+> `release-please-config.json` to per-package components (tags become
+> `<plugin>-vX.Y.Z`).
+
+Plugins install directly from `main`, so tags/releases are for clarity and
+reference, not delivery.
