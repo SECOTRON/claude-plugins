@@ -40,6 +40,16 @@ lint:
         # GitHub issue/PR templates use bold-label scaffolding, not prose
         - .github/ISSUE_TEMPLATE/**
         - .github/pull_request_template.md
+    - linters: [markdownlint, prettier]
+      paths:
+        # Per-plugin changelogs are generated and owned by release-please;
+        # linting them fights the tool and breaks CI on every release merge.
+        - plugins/*/CHANGELOG.md
+    - linters: [prettier]
+      paths:
+        # release-please re-serializes plugin.json on every version bump in its
+        # own style; let it own the formatting (make validate checks validity).
+        - plugins/*/.claude-plugin/plugin.json
 actions:
   enabled:
     - commitlint
