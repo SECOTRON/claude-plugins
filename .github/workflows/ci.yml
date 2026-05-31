@@ -22,6 +22,10 @@ jobs:
 
       - name: Trunk Check
         uses: trunk-io/trunk-action@v1
+        with:
+          # check the whole repo, not just the diff, so generated-file drift
+          # (e.g. release-please output) can't slip through between pushes
+          arguments: --all
 
   validate:
     name: Validate manifests
