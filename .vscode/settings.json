@@ -1,0 +1,15 @@
+{
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.multiCursorModifier": "ctrlCmd",
+  "[python]": {
+    "editor.defaultFormatter": "trunk.io"
+  },
+  "workbench.colorTheme": "SECOTRON",
+  "git.autofetch": true,
+  "trunk.repoScanViewEnabled": true,
+  "trunk.repoScanViewVisible": true,
+  "peacock.affectActivityBar": true,
+  "peacock.affectStatusBar": true,
+  "peacock.affectTitleBar": true
+}
