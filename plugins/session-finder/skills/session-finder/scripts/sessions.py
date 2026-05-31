@@ -11,6 +11,8 @@ Subcommands:
     list                 List recent sessions (newest first).
     search <query>       Full-text search across session messages.
     show <session-id>    Print an outline of one session.
+    resume [session-id]  Print the `claude --resume` command for a session
+                         (the latest in scope when no id is given).
 
 Scope flags:
     --here               Only sessions whose recorded cwd == current directory.
@@ -234,6 +236,14 @@ def find_by_id(session_id: str) -> Path | None:
     return None
 
 
+def resume_line(meta: dict) -> str:
+    """The exact command to resume a session, cd-prefixed if in another dir."""
+    cwd = meta.get("cwd")
+    if cwd and _norm(cwd) != _norm(os.getcwd()):
+        return f"cd {cwd} && claude --resume {meta['id']}"
+    return f"claude --resume {meta['id']}"
+
+
 def cmd_show(args):
     path = find_by_id(args.session_id)
     if path is None:
@@ -272,11 +282,42 @@ def cmd_show(args):
         tag = "you" if role == "user" else "claude"
         print(f"[{tag}] {txt}")
     print("-" * 60)
-    cwd = meta.get("cwd")
-    if cwd and _norm(cwd) != _norm(os.getcwd()):
-        print(f"To resume:  cd {cwd} && claude --resume {meta['id']}")
+    print(f"To resume:  {resume_line(meta)}")
+
+
+def cmd_resume(args):
+    if args.session_id:
+        path = find_by_id(args.session_id)
+        if path is None:
+            print(f"No session file found for id {args.session_id!r}.")
+            sys.exit(1)
+        meta = quick_meta(path)
     else:
-        print(f"To resume:  claude --resume {meta['id']}")
+        metas = [
+            m
+            for m in (quick_meta(p) for p in session_files())
+            if matches_scope(m, args)
+        ]
+        if not metas:
+            print("No sessions found for this scope.")
+            sys.exit(1)
+        metas.sort(key=lambda m: m["mtime"], reverse=True)
+        meta = metas[0]
+    if args.json:
+        print(
+            json.dumps(
+                {
+                    "id": meta["id"],
+                    "cwd": meta.get("cwd"),
+                    "command": resume_line(meta),
+                },
+                indent=2,
+            )
+        )
+        return
+    print(f"# {title_of(meta)}")
+    print(f"# {fmt_age(meta['mtime'])} · {meta.get('cwd') or '(unknown project)'}")
+    print(resume_line(meta))
 
 
 def build_parser():
@@ -306,6 +347,22 @@ def build_parser():
     shp.add_argument("--full", action="store_true", help="longer message previews")
     shp.add_argument("--json", action="store_true")
     shp.set_defaults(func=cmd_show)
+
+    rp = sub.add_parser(
+        "resume",
+        help="print the resume command for a session (latest in scope, or by id)",
+    )
+    rp.add_argument(
+        "session_id",
+        nargs="?",
+        help="session id or prefix; omit to use the latest in scope",
+    )
+    rp.add_argument(
+        "--here", action="store_true", help="only current directory's project"
+    )
+    rp.add_argument("--project", help="only this project path")
+    rp.add_argument("--json", action="store_true")
+    rp.set_defaults(func=cmd_resume)
     return p
 
 

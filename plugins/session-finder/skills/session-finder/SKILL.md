@@ -30,23 +30,30 @@ ${CLAUDE_PLUGIN_ROOT}/skills/session-finder/scripts/sessions.py
 ```
 
 Run it with `python3` (or `python` on Windows, which usually has no `python3`).
-Three subcommands:
+Four subcommands:
 
-| Goal                 | Command                              |
-| -------------------- | ------------------------------------ |
-| List recent sessions | `python3 <script> list`              |
-| Search message text  | `python3 <script> search "auth bug"` |
-| Outline one session  | `python3 <script> show <session-id>` |
+| Goal                 | Command                                |
+| -------------------- | -------------------------------------- |
+| List recent sessions | `python3 <script> list`                |
+| Search message text  | `python3 <script> search "auth bug"`   |
+| Outline one session  | `python3 <script> show <session-id>`   |
+| Get a resume command | `python3 <script> resume [session-id]` |
 
-Scope flags (for `list` and `search`): `--here` (only the current directory's
-project), `--project <path>` (a specific project), or nothing (all projects).
-Other flags: `--limit N` (default 20), `--json` (machine-readable), and
-`--full` (longer previews, `show` only).
+Scope flags (for `list`, `search`, `resume`): `--here` (only the current
+directory's project), `--project <path>` (a specific project), or nothing (all
+projects). Other flags: `--limit N` (default 20), `--json` (machine-readable),
+and `--full` (longer previews, `show` only).
+
+`resume` with no id picks the most recent session in scope; with an id (or
+prefix) it targets that one. It prints the `claude --resume <id>` command — it
+does **not** swap the live conversation in place the way the built-in `/resume`
+does; the user runs the printed command in their CLI/IDE.
 
 ## Workflow
 
 1. **Figure out the intent.** A topic or keywords → `search`. "What was I just
-   doing / recent sessions" → `list`. A uuid-like id → `show`.
+   doing / recent sessions" → `list`. A uuid-like id → `show`. "Resume X / pick
+   up where I left off" → `resume` (latest in scope, or by id).
 2. **Start narrow, then widen.** If the user is clearly talking about the
    project they're in, try `--here` first; if nothing fits, rerun without it to
    cover all projects and surfaces.
