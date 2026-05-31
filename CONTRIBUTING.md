@@ -83,11 +83,12 @@ versions or edit the changelog by hand:
 `feat` → minor, `fix` → patch, `feat!`/`BREAKING CHANGE` → major. `chore`/`ci`
 are hidden from the changelog.
 
-> **Versioning model:** currently _lockstep_ — one repo version (`vX.Y.Z`) covers
-> the whole marketplace; the single plugin's `plugin.json` is kept in sync. When
-> multiple independently-versioned plugins exist, migrate
-> `release-please-config.json` to per-package components (tags become
-> `<plugin>-vX.Y.Z`).
+> **Versioning model:** _per-plugin_. Each plugin is its own release-please
+> package — it bumps only on commits that touch its `plugins/<name>/` path,
+> keeps its own `CHANGELOG.md`, and tags `<plugin>-vX.Y.Z` (e.g.
+> `session-finder-v0.1.1`). release-please may open one release PR per plugin.
+> Register a new plugin under `packages` in `release-please-config.json` and add
+> its baseline to `.release-please-manifest.json`.
 
 Plugins install directly from `main`, so tags/releases are for clarity and
 reference, not delivery.
