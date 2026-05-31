@@ -1,0 +1,40 @@
+{
+  "folders": [
+    {
+      "name": "claude-plugins",
+      "path": "."
+    }
+  ],
+  "settings": {
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.multiCursorModifier": "ctrlCmd",
+    "[python]": {
+      "editor.defaultFormatter": "trunk.io"
+    },
+    "workbench.colorTheme": "SECOTRON",
+    "git.autofetch": true,
+    "trunk.repoScanViewEnabled": true,
+    "trunk.repoScanViewVisible": true,
+    "peacock.affectActivityBar": true,
+    "peacock.affectStatusBar": true,
+    "peacock.affectTitleBar": true
+  },
+  "extensions": {
+    "recommendations": [
+      "trunk.io",
+      "editorconfig.editorconfig",
+      "esbenp.prettier-vscode",
+      "redhat.vscode-yaml",
+      "ms-python.python",
+      "eamodio.gitlens",
+      "github.vscode-github-actions",
+      "adam-bender.commit-message-editor",
+      "yzhang.markdown-all-in-one",
+      "bierner.github-markdown-preview",
+      "ms-vscode.makefile-tools",
+      "secotron.secotron-color-theme",
+      "johnpapa.vscode-peacock"
+    ]
+  }
+}
