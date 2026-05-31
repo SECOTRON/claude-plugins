@@ -35,6 +35,11 @@ lint:
       paths:
         # commitlint config is ESM consumed by the commitlint action, not source
         - commitlint.config.js
+    - linters: [markdownlint]
+      paths:
+        # GitHub issue/PR templates use bold-label scaffolding, not prose
+        - .github/ISSUE_TEMPLATE/**
+        - .github/pull_request_template.md
 actions:
   enabled:
     - commitlint

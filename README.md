@@ -49,10 +49,23 @@ creating its directory and appending an entry to
 Linting is handled by [trunk](https://trunk.io) at the repo root:
 
 ```text
-trunk check --all
-trunk fmt
+make setup    # one-time: trunk + linters + git hooks
+make test     # validate manifests + lint + smoke test
+make fmt      # auto-format
 ```
+
+## Contributing
+
+Contributions welcome — see [CONTRIBUTING.md](CONTRIBUTING.md) for setup, commit
+conventions, and how to add a plugin. By participating you agree to the
+[Code of Conduct](CODE_OF_CONDUCT.md). Found a vulnerability? See
+[SECURITY.md](SECURITY.md).
+
+## Support
+
+If these plugins are useful, you can [sponsor on GitHub](https://github.com/sponsors/thomasgeens)
+or [buy me a coffee](https://www.buymeacoffee.com/thomas.geens). ☕
 
 ## License
 
-MIT
+[MIT](LICENSE) © Thomas Geens
