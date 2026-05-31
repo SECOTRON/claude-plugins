@@ -1,0 +1,11 @@
+{
+  "name": "thomas-local",
+  "owner": { "name": "Thomas" },
+  "plugins": [
+    {
+      "name": "claude-session-finder",
+      "source": "./",
+      "description": "Find, search, summarize and resume past Claude Code sessions across surfaces by reading the local JSONL transcripts."
+    }
+  ]
+}
