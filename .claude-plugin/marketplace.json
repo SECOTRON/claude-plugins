@@ -1,10 +1,13 @@
 {
-  "name": "thomas-local",
-  "owner": { "name": "Thomas" },
+  "name": "secotron",
+  "owner": {
+    "name": "Secotron",
+    "url": "https://github.com/secotron"
+  },
   "plugins": [
     {
       "name": "claude-session-finder",
-      "source": "./",
+      "source": "./plugins/claude-session-finder",
       "description": "Find, search, summarize and resume past Claude Code sessions across surfaces by reading the local JSONL transcripts."
     }
   ]
